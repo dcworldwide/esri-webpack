@@ -10,9 +10,9 @@ for (var file in window.__karma__.files) {
 window.dojoConfig = {
     packages: [
         { name: "local", location: "/base"},
-        { name: "esri", location: "http://js.arcgis.com/3.16/esri"},
-        { name: "dojo", location: "http://js.arcgis.com/3.16/dojo" },
-        { name: "dojox", location: "http://js.arcgis.com/3.16/dojox" }
+        { name: "esri", location: "http://js.arcgis.com/3.17/esri"},
+        { name: "dojo", location: "http://js.arcgis.com/3.17/dojo" },
+        { name: "dojox", location: "http://js.arcgis.com/3.17/dojox" }
     ],
     async: true
 };

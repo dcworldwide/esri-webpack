@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= htmlWebpackPlugin.options.title %> (<%= htmlWebpackPlugin.options.environment %>)</title>
+        <link rel="stylesheet" href="https://js.arcgis.com/3.17/dijit/themes/nihilo/nihilo.css">
+        <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">
+    </head>
+
+    <body>
+        <div id="app" style="display: flex; flex-direction: row; flex-grow: 1; height: 100vh; padding: 0px; margin 0px;"></div>
+        
+        <!-- External Dependencies -->
+        <script src="https://js.arcgis.com/3.17/"></script>
+
+        <script>
+            require([".<%= htmlWebpackPlugin.files.js[0] %>", ".<%= htmlWebpackPlugin.files.js[1] %>"], function (vendor, main) {});
+        </script>
+    </body>
+</html>

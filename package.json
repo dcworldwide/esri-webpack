@@ -4,7 +4,10 @@
   "description": "ESRI JSAPI with Webpack demo",
   "main": "dist/esri-webpack",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
+    "build": "webpack --progress --colors",
+    "buildw": "webpack --progress --colors --watch",
+    "start": "node server.js",
+    "release": "NODE_ENV=production webpack -p",
     "test": "karma start --single-run"
   },
   "repository": {
@@ -15,9 +18,10 @@
   "files": [
     "dist"
   ],
-  "author": "Ian Firkin",
+  "author": "",
   "license": "MIT",
   "devDependencies": {
+    "html-webpack-plugin": "^2.22.0",
     "jasmine-ajax": "~3.1.1",
     "jasmine-core": "~2.3.4",
     "karma": "^0.13.21",
@@ -32,6 +36,11 @@
     "tslint": "^3.2.1",
     "typescript": "^1.8.5",
     "typings": "^1.0.4",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.15.0"
+  },
+  "dependencies": {
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1"
   }
 }

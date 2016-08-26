@@ -11,15 +11,16 @@ const style = {
     }
 }
 
-export interface PanelViewProps {  }
+export interface PanelViewProps {
+  }
 
 export class PanelView extends React.Component<PanelViewProps, {}> {
     render() {
         return <div style={style.container}>
            <h1>Panel</h1>
-           <ItemView />
-           <ItemView />
-           <ItemView />
+           <ItemView label="A" colour="pink" />
+           <ItemView label="B" colour="red" />
+           <ItemView label="C" colour="purple" />
         </div>
     }
 }

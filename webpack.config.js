@@ -4,9 +4,9 @@ var webpack = require("webpack");
 
 module.exports = {
     entry: [
+        './src/app/main.tsx', // entry point. Must be first in array
+        'webpack/hot/dev-server',    
         'webpack-dev-server/client?http://localhost:8080/',
-        'webpack/hot/dev-server',
-        './src/app/main.tsx'        
     ],
 
     // Disabled. Multi-bundle support

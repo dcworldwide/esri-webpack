@@ -76,6 +76,13 @@ export class MapView extends React.Component<MapProps, MapState> {
     createToolbar() {
         console.log('createToolbar')
 
+        // Enable Snapping
+        // https://developers.arcgis.com/javascript/3/jsapi/snappingmanager-amd.html
+        this.map.enableSnapping({
+            alwaysSnap: true,
+            // tolerance: 10
+        })
+
         // Enable drawing 
         this.toolbar = new Draw(this.map);
         this.toolbar.on("draw-end", this.addToMap.bind(this));
@@ -85,13 +92,6 @@ export class MapView extends React.Component<MapProps, MapState> {
 
         // Enable editing 
         this.editToolbar = new Edit(this.map);
-        
-        // Enable Snapping
-        // https://developers.arcgis.com/javascript/3/jsapi/snappingmanager-amd.html
-        this.map.enableSnapping({
-            alwaysSnap: true,
-            tolerance: 1
-        })
 
         //Activate the toolbar when you click on a graphic
         this.map.graphics.on("click", (e: any) => {
@@ -109,6 +109,9 @@ export class MapView extends React.Component<MapProps, MapState> {
     }
 
     addGraphics() {
+
+        console.log("addGraphics")
+
         //add pre-defined geometries to map
         var polygonSymbol = new SimpleFillSymbol();
         var polylineSymbol = new SimpleLineSymbol();

@@ -16,7 +16,7 @@ export class App extends React.Component<AppProps, {}> {
     render() {
         return <div style={style.container}>
             <PanelView />
-            <MapView center="3.955, 59.338" />         
+            <MapView center="3.955, 59.338" />
         </div>
     }
 }

@@ -14,10 +14,17 @@ var compiler = webpack(config);
 var server = new WebpackDevServer(compiler, {
   contentBase: 'dist',
   hot: true,
+  host: "0.0.0.0",
   filename: 'bundle.js',
   publicPath: '/',
   stats: {
     colors: true,
   },
 });
-server.listen(8080, 'localhost', function() {});
+server.listen(8080, 'localhost', function (err, stats) {
+  if (err) {
+    throw new gutil.PluginError("webpack-dev-server", err);
+  }
+
+  console.log('DEV SERVER STARTED');
+});

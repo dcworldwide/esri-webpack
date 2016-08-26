@@ -25,7 +25,7 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: 'bundle.js',
         publicPath: '/',
-        libraryTarget: "umd" // Creates a AMD and UMD compatible bundle. Required to load Esri dojo components
+        libraryTarget: "amd" // Creates a AMD and UMD compatible bundle. Required to load Esri dojo components
         
         // Disabled. Multi-bundle support
         // path: path.resolve(__dirname, "dist"),

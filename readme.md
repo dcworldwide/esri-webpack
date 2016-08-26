@@ -2,7 +2,7 @@
 
 Extends the great work done here lobsteropteryx/esri-webpack, but adds:
 
-- HMR)
+- HMR
 - React support
 - More concrete examples of using the Esri JS api with React.
 

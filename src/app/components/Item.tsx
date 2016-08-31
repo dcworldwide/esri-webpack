@@ -14,10 +14,18 @@ export interface ItemViewProps {
 }
 
 export class ItemView extends React.Component<ItemViewProps, {}> {
+
+    renderCount : number = 0
+
+    componentDidMount() {
+        console.log(`Item ${this.props.label} mounted`)
+    }
+
     render() {
-        console.log(`Item ${this.props.label} rendered`)
+        this.renderCount++
+        console.log(`Item ${this.props.label} rendered. ${this.renderCount}`)
         return <div style={style.container}>
-           <h2 style={{color: this.props.colour || "olive"}}>{this.props.label}</h2>
+           <h2 style={{color: this.props.colour || "olive"}}>{this.props.label} ({this.renderCount})</h2>
         </div>
     }
 }

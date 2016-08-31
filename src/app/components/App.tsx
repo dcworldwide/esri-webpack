@@ -20,6 +20,3 @@ export class App extends React.Component<AppProps, {}> {
         </div>
     }
 }
-
-
-//   <MapView center="3.955, 59.338" />

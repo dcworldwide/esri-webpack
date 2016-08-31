@@ -8,20 +8,12 @@
 </head>
 
 <body>
-    <div id="app" style="display: flex; flex-direction: row; flex-grow: 1; height: 100vh; padding: 0px; margin 0px;"></div>
+    <div id="root" style="display: flex; flex-direction: row; flex-grow: 1; height: 100vh; padding: 0px; margin 0px;"></div>
 
     <script src="http://localhost:8080/webpack-dev-server.js"></script>
 
     <!-- External Dependencies -->
     <script src="https://js.arcgis.com/3.17/"></script>
-
-    <!-- Original, bundle loading logic. -->
-    <!--<script>
-            require(["./vendor.bundle.js", "./main.bundle.js"], function (vendor, main) {});
-        </script>-->
-
-    <!-- Load our AMD packaged bundle (HMR works with this approach, but loading esri dojo components breaks) -->
-    <!--<script src="/bundle.js"></script>-->
 
     <!-- Load our AMD packaged bundle (Successfully loads esri dojo components, but HMR is broken) -->
     <script>

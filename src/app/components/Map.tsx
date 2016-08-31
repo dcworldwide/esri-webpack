@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import esri = require("esri");
 import Map = require("esri/map");
 import Draw = require("esri/toolbars/draw")
 import Edit = require("esri/toolbars/edit")
@@ -13,6 +14,7 @@ import SimpleMarkerSymbol = require("esri/symbols/SimpleMarkerSymbol")
 import SimpleLineSymbol = require("esri/symbols/SimpleLineSymbol")
 import SimpleFillSymbol = require("esri/symbols/SimpleFillSymbol")
 import Color = require("esri/Color")
+import keys = require("dojo/keys");
 import parser = require("dojo/parser")
 import event = require("dojo/_base/event")
 
@@ -55,11 +57,13 @@ export class MapView extends React.Component<MapProps, MapState> {
 
     componentDidMount() {
 
-        this.map = new Map(ReactDOM.findDOMNode(this.refs.map), {
+        let el: Element = this.refs["map"] as Element;
+
+        this.map = new Map(ReactDOM.findDOMNode(el), {
             center: [this.state.center[0], this.state.center[1]],
             zoom: 2,
             basemap: "topo"
-        });
+        })
 
         this.map.on("load", () => {
             console.log('map loaded')
@@ -78,34 +82,36 @@ export class MapView extends React.Component<MapProps, MapState> {
 
         // Enable Snapping
         // https://developers.arcgis.com/javascript/3/jsapi/snappingmanager-amd.html
-        this.map.enableSnapping({
+        let snappingOpts : esri.SnappingManagerOptions = {
+            map: this.map,
             alwaysSnap: true,
-            // tolerance: 10
-        })
+            tolerance: 15
+        }
+        this.map.snappingManager = new SnappingManager(snappingOpts)
 
-        // Enable drawing 
+        console.log(this.map.snappingManager)
+
+        // // Enable drawing 
         this.toolbar = new Draw(this.map);
-        this.toolbar.on("draw-end", this.addToMap.bind(this));
+        this.toolbar.on("draw-complete", this.addToMap.bind(this));
 
         // Setup base graphics to demonstrate symbology
         this.addGraphics();
 
         // Enable editing 
-        this.editToolbar = new Edit(this.map);
+        // this.editToolbar = new Edit(this.map);
 
-        //Activate the toolbar when you click on a graphic
-        this.map.graphics.on("click", (e: any) => {
-            event.stop(e);
+        // //Activate the toolbar when you click on a graphic
+        // this.map.graphics.on("click", (e: any) => {
+        //     event.stop(e);
+        //     let {graphic} = e
+        //     this.editToolbar.activate(Edit.MOVE | Edit.SCALE | Edit.ROTATE | Edit.EDIT_VERTICES, graphic);
+        // });
 
-            let {graphic} = e
-
-            this.editToolbar.activate(Edit.MOVE | Edit.SCALE | Edit.ROTATE | Edit.EDIT_VERTICES, graphic);
-        });
-
-        //deactivate the toolbar when you click outside a graphic
-        this.map.on("click", (evt) => {
-            this.editToolbar.deactivate();
-        });
+        // //deactivate the toolbar when you click outside a graphic
+        // this.map.on("click", (evt) => {
+        //     this.editToolbar.deactivate();
+        // });
     }
 
     addGraphics() {
@@ -117,7 +123,7 @@ export class MapView extends React.Component<MapProps, MapState> {
         var polylineSymbol = new SimpleLineSymbol();
 
         // style
-        polygonSymbol.setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,100,0]), 2)); 
+        polygonSymbol.setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 100, 0]), 2));
 
         var polyline = new Polyline({
             "paths": [
@@ -189,9 +195,12 @@ export class MapView extends React.Component<MapProps, MapState> {
         this.map.graphics.add(new Graphic(polygon, polygonSymbol));
         this.map.graphics.add(new Graphic(arrow, polygonSymbol));
         this.map.graphics.add(new Graphic(triangle, polygonSymbol));
+
+        
     }
 
     addToMap(evt: any) {
+        console.log('addToMap')
         var symbol: any;
         this.toolbar.deactivate();
         this.map.showZoomSlider()
@@ -214,7 +223,7 @@ export class MapView extends React.Component<MapProps, MapState> {
     }
 
     shouldComponentUpdate(nextProps: MapProps, nextState: any) {
-        return false //nextProps.center !== this.props.center
+        return true //nextProps.center !== this.props.center
     }
 
     render() {

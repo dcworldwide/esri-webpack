@@ -1,9 +1,12 @@
 {
+    "compileOnSave": false,
     "compilerOptions": {
         "module": "amd",
-        "noImplicitAny": true,
         "target": "ES5",
+        "moduleResolution": "node",
         "jsx": "react",
+        "noImplicitAny": false,
+        "allowJs": true,
         "sourceMap": true
     }
 }

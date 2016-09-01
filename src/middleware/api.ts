@@ -1,5 +1,6 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
-import { camelizeKeys } from 'humps'
+import humps = require('humps')
+import {Promise} from 'es6-promise';
 import 'isomorphic-fetch'
 
 // Extracts the next page URL from Github API response.
@@ -32,10 +33,10 @@ function callApi(endpoint, schema) {
         return Promise.reject(json)
       }
 
-      const camelizedJson = camelizeKeys(json)
+      const camelizedJson = json // humps.camelizeKeys(json)
       const nextPageUrl = getNextPageUrl(response)
 
-      return Object.assign({},
+      return (<any>Object).assign({},
         normalize(camelizedJson, schema),
         { nextPageUrl }
       )
@@ -76,7 +77,7 @@ export const Schemas = {
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.
-export const CALL_API = Symbol('Call API')
+export const CALL_API = 'Call API' // was a Symbol
 
 // A Redux middleware that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
@@ -107,7 +108,7 @@ export default store => next => action => {
   }
 
   function actionWith(data) {
-    const finalAction = Object.assign({}, action, data)
+    const finalAction = (<any>Object).assign({}, action, data)
     delete finalAction[CALL_API]
     return finalAction
   }

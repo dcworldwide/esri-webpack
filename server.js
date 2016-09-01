@@ -20,6 +20,18 @@ var server = new WebpackDevServer(compiler, {
   stats: {
     colors: true,
   },
+  proxy: {
+    "/proxy": {
+      "target": {
+        "host": "localhost",
+        "protocol": 'http:',
+        "port": 80
+      },
+      // ignorePath: true,
+      // changeOrigin: true,
+      secure: false
+    }
+  }
 });
 server.listen(8080, 'localhost', function (err, stats) {
   if (err) {

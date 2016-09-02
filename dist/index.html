@@ -3,22 +3,47 @@
 
 <head>
     <title>My App (Development)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <link rel="stylesheet" href="https://js.arcgis.com/3.17/dijit/themes/nihilo/nihilo.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">
+
+    <!-- IE11 Object.assign polyfill -->
+    <script type="text/javascript" charset="utf-8">
+        if (typeof Object.assign != 'function') {
+            Object.assign = function(target) {
+                'use strict';
+                if (target == null) {
+                throw new TypeError('Cannot convert undefined or null to object');
+                }
+
+                target = Object(target);
+                for (var index = 1; index < arguments.length; index++) {
+                var source = arguments[index];
+                if (source != null) {
+                    for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                    }
+                }
+                }
+                return target;
+            };
+        }
+    </script>
 </head>
 
 <body>
     <div id="root" style="display: flex; flex-direction: row; flex-grow: 1; height: 100vh; padding: 0px; margin 0px;"></div>
-
-    <script src="http://localhost:8080/webpack-dev-server.js"></script>
 
     <!-- External Dependencies -->
     <script src="https://js.arcgis.com/3.17/"></script>
 
     <!-- Load our AMD packaged bundle (Successfully loads esri dojo components, but HMR is broken) -->
     <script>
-        require(["/bundle.js"], function (bundle) {
-            console.log("bundle.js loaded")
+        require(["/vendor.bundle.js", "/app.bundle.js"], function (bundle) {
+            console.log("bundles loaded")
         });
     </script>
 </body>

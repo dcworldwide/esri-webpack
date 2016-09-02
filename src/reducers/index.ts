@@ -113,7 +113,7 @@ const rootReducer = combineReducers({
   // errorMessage,
   routing,
   entity,
-  postsBySubreddit
+  // postsBySubreddit
 })
 
 export default rootReducer

@@ -3,69 +3,68 @@ var webpack = require("webpack");
 // var HtmlWebpackPlugin = require('html-webpack-plugin'); 
 
 module.exports = {
-    entry: [
-        './src/index.tsx', // entry point. Must be first in array
-        'webpack/hot/dev-server',    
-        'webpack-dev-server/client?http://localhost:8080/',
-    ],
 
-    // Disabled. Multi-bundle support
-    // entry: {
-    //     main: [
-    //         './src/app/main.tsx', // entry point for your application code
-    //         'webpack/hot/dev-server',
-    //         'webpack-dev-server/client?http://localhost:8080/'            
-    //     ],       
-    //     vendor: [
-    //         // put your third party libs here
-    //     ]
-    // },
+    // Application entry points (we have split the app into bundles/chunks)
+    entry: {
+        app: [
+            './src/index.tsx', // entry point. Must be first in array
+            'webpack/hot/dev-server',
+            'webpack-dev-server/client?http://localhost:8080/'
+        ],
+        vendor: ['react', 'redux', 'react-router', 'fixed-data-table', 'material-ui', 'lodash']
+    },
 
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
         publicPath: '/',
-        libraryTarget: "amd" // Creates a AMD and UMD compatible bundle. Required to load Esri dojo components
-        
-        // Disabled. Multi-bundle support
-        // path: path.resolve(__dirname, "dist"),
-        // // path: "dist",
-        // filename: '[name].bundle.js',
-        // // publicPath: './',
-        // publicPath: '/dist/',
-        // libraryTarget: "umd" // was amd. Try umd?
+        libraryTarget: "amd", // Creates a AMD compatible bundle. Required as we are side-loading our code with their Esri dojo dependencies
     },
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+
+        // Configuration
+        alias: {
+            config: path.join(__dirname, 'config', 'config.json') // , process.env.NODE_ENV
+        }
     },
 
     module: {
         loaders: [
+            // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
             {
-                // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
                 test: /\.tsx?$/,
-                // loader: 'ts-loader',
-                loaders: ['react-hot', 'ts-loader'],
-                exclude: ''
+                loaders: ['react-hot', 'ts-loader'], // loader: 'ts-loader',
+                exclude: /node_modules/
             },
             // css
             {
                 test: /\.css$/,
                 loader: "style-loader!css-loader"
+            },
+            // json
+            {
+                test: /\.json$/,
+                loader: "json"
             }
         ]
     },
 
     plugins: [
+        // Enable webpack HMR
         new webpack.HotModuleReplacementPlugin(),
 
-        // Disabled. Multi-bundle support
-        // I can't get HMR working with chunks. https://github.com/webpack/webpack/issues/969
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor',
-        //     minChunks: Infinity
+        // Split build output into logical app / vendor bundles. https://github.com/webpack/webpack/issues/969
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: Infinity
+        }),
+
+        // Define environment name
+        // new webpack.DefinePlugin({
+        //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
         // }),
 
         // Disabled. Dynamic index.html generation
@@ -85,7 +84,7 @@ module.exports = {
     // This is important because it allows us to avoid bundling all of our
     // dependencies, which allows browsers to cache those libraries between builds.
     externals: [
-        function(context, request, callback) {
+        function (context, request, callback) {
             if (/^dojo/.test(request) ||
                 /^dojox/.test(request) ||
                 /^dijit/.test(request) ||
@@ -98,6 +97,7 @@ module.exports = {
     ],
 
     // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
+    // devtool: "source-map",
     // devtool: "eval",
+    devtool: 'cheap-module-source-map'
 };

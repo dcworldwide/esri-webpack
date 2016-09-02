@@ -17,6 +17,7 @@ var server = new WebpackDevServer(compiler, {
   host: "0.0.0.0",
   filename: 'bundle.js',
   publicPath: '/',
+  noInfo: false,
   stats: {
     colors: true,
   },
